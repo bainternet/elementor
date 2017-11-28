@@ -131,6 +131,11 @@ class Plugin {
 	private $modules_manager;
 
 	/**
+	 * @var Core\RoleManager\RoleManager
+	 */
+	public $role_manager;
+
+	/**
 	 * @var Beta_Testers
 	 */
 	public $beta_testers;
@@ -235,6 +240,7 @@ class Plugin {
 		$this->templates_manager = new TemplateLibrary\Manager();
 		$this->maintenance_mode = new Maintenance_Mode();
 		$this->modules_manager = new Modules_Manager();
+		$this->role_manager = new Core\RoleManager\RoleManager();
 
 		Api::init();
 		Tracker::init();

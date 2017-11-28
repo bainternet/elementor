@@ -33,9 +33,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-elementor-panel-footer-content">
+	<?php if ( Plugin::$instance->role_manager->user_can( 'elementor_editor_all' ) ) : ?>
 	<div id="elementor-panel-footer-settings" class="elementor-panel-footer-tool elementor-leave-open tooltip-target" data-tooltip="<?php esc_html_e( 'Settings', 'elementor' ); ?>">
 		<i class="fa fa-cog"></i>
 	</div>
+	<?php endif; ?>
 	<div id="elementor-panel-footer-responsive" class="elementor-panel-footer-tool tooltip-target" data-tooltip="<?php esc_attr_e( 'Responsive Mode', 'elementor' ); ?>">
 		<i class="eicon-device-desktop"></i>
 		<div class="elementor-panel-footer-sub-menu-wrapper">
@@ -124,7 +126,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/template" id="tmpl-editor-content">
 	<div class="elementor-panel-navigation">
-		<# _.each( elementData.tabs_controls, function( tabTitle, tabSlug ) { #>
+        <# _.each( elementData.tabs_controls, function( tabTitle, tabSlug ) {
+        if ( 'content' !== tabSlug && !elementor.userCan( 'elementor_editor_style' ) ) {
+            return;
+        }
+        #>
 		<div class="elementor-panel-navigation-tab elementor-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
 			<a href="#">{{{ tabTitle }}}</a>
 		</div>

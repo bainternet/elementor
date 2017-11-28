@@ -54,11 +54,7 @@ class User {
 			return false;
 		}
 
-		$user = wp_get_current_user();
-		$exclude_roles = get_option( 'elementor_exclude_user_roles', [] );
-
-		$compare_roles = array_intersect( $user->roles, $exclude_roles );
-		if ( ! empty( $compare_roles ) ) {
+		if ( ! Plugin::instance()->role_manager->user_can( Core\RoleManager\RoleManager::BASIC_CAP ) ) {
 			return false;
 		}
 

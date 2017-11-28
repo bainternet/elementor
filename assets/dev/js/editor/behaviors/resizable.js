@@ -18,6 +18,9 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ){
+        	return;
+        }
 		this.deactivate();
 
 		var options = _.clone( this.options );

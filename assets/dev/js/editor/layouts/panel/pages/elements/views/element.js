@@ -8,7 +8,11 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 	onRender: function() {
 		var self = this;
 
-		this.$el.html5Draggable( {
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ) {
+            return;
+		}
+
+        this.$el.html5Draggable( {
 
 			onDragStart: function() {
 				elementor.channels.panelElements

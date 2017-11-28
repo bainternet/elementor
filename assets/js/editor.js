@@ -327,6 +327,9 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ){
+        	return;
+        }
 		this.deactivate();
 
 		var options = _.clone( this.options );
@@ -448,6 +451,9 @@ SortableBehavior = Marionette.Behavior.extend( {
 		if ( this.getChildViewContainer().sortable( 'instance' ) ) {
 			return;
 		}
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ) {
+			return;
+        }
 
 		var $childViewContainer = this.getChildViewContainer(),
 			defaultSortableOptions = {
@@ -2261,6 +2267,13 @@ App = Marionette.Application.extend( {
 
 	_defaultDeviceMode: 'desktop',
 
+    userCan: function( capability ) {
+        if ( ! this.config.user.capabilities.hasOwnProperty( capability ) ) {
+        	return true;
+        }
+        return this.config.user.capabilities[ capability ];
+    },
+
 	addControlView: function( controlID, ControlView ) {
 		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
 	},
@@ -3208,7 +3221,14 @@ EditorView = ControlsStack.extend( {
 	onBeforeRender: function() {
 		var controls = elementor.getElementControls( this.model );
 
-		if ( ! controls ) {
+        var userCanEditStyle = elementor.userCan( 'elementor_editor_style' );
+        controls = _.filter( controls, function( control ) {
+            if ( userCanEditStyle ) {
+                return true;
+            }
+            return 'content' === control.tab;
+        } );
+        if ( ! controls ) {
 			throw new Error( 'Editor controls not found' );
 		}
 
@@ -3537,7 +3557,11 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 	onRender: function() {
 		var self = this;
 
-		this.$el.html5Draggable( {
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ) {
+            return;
+		}
+
+        this.$el.html5Draggable( {
 
 			onDragStart: function() {
 				elementor.channels.panelElements
@@ -3707,52 +3731,70 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 	items: null,
 
 	initItems: function() {
-		this.items = new Backbone.Collection( [
-			{
-				name: 'global-colors',
-				icon: 'fa fa-paint-brush',
-				title: elementor.translate( 'global_colors' ),
-				type: 'page',
-				pageName: 'colorScheme'
-			},
-			{
-				name: 'global-fonts',
-				icon: 'fa fa-font',
-				title: elementor.translate( 'global_fonts' ),
-				type: 'page',
-				pageName: 'typographyScheme'
-			},
-			{
-				name: 'color-picker',
-				icon: 'fa fa-eyedropper',
-				title: elementor.translate( 'color_picker' ),
-				type: 'page',
-				pageName: 'colorPickerScheme'
-			},
-			{
-				name: 'elementor-settings',
-				icon: 'eicon-elementor',
-				title: elementor.translate( 'elementor_settings' ),
-				type: 'link',
-				link: elementor.config.settings_page_link,
-				newTab: true
-			},
-			{
-				name: 'about-elementor',
-				icon: 'fa fa-info-circle',
-				title: elementor.translate( 'about_elementor' ),
-				type: 'link',
-				link: elementor.config.elementor_site,
-				newTab: true
-			},
-			{
-				name: 'exit-to-dashboard',
-				icon: 'fa fa-times',
-				title: elementor.translate( 'exit_to_dashboard' ),
-				type: 'link',
-				link: _.unescape( elementor.config.exit_to_dashboard_url )
-			}
-		] );
+        var menuItems = [];
+        if ( elementor.userCan( 'elementor_editor_style' ) ) {
+            menuItems = menuItems.concat( [
+                {
+                    name: 'global-colors',
+                    icon: 'fa fa-paint-brush',
+                    title: elementor.translate( 'global_colors' ),
+                    type: 'page',
+                    pageName: 'colorScheme'
+                },
+                {
+                    name: 'global-fonts',
+                    icon: 'fa fa-font',
+                    title: elementor.translate( 'global_fonts' ),
+                    type: 'page',
+                    pageName: 'typographyScheme'
+                },
+                {
+                    name: 'color-picker',
+                    icon: 'fa fa-eyedropper',
+                    title: elementor.translate( 'color_picker' ),
+                    type: 'page',
+                    pageName: 'colorPickerScheme'
+                }
+            ] );
+        }
+
+
+        menuItems = menuItems.concat( [
+            {
+                name: 'about-elementor',
+                icon: 'fa fa-info-circle',
+                title: elementor.translate( 'about_elementor' ),
+                type: 'link',
+                link: elementor.config.elementor_site,
+                newTab: true
+            },
+            {
+                name: 'exit-to-dashboard',
+                icon: 'fa fa-times',
+                title: elementor.translate( 'exit_to_dashboard' ),
+                type: 'link',
+                link: _.unescape( elementor.config.exit_to_dashboard_url )
+
+            }
+        ] );
+
+        this.items = new Backbone.Collection( menuItems );
+
+        if ( elementor.userCan( 'elementor_editor_all' ) ) {
+            this.addItem(
+                {
+                    name: 'elementor-settings',
+                    icon: 'eicon-elementor',
+                    title: elementor.translate('elementor_settings'),
+                    type: 'link',
+                    link: elementor.config.settings_page_link,
+                    newTab: true
+                },
+                {
+                    after: 'about-elementor'
+                }
+            );
+        }
 	},
 
 	getItems: function() {
@@ -10583,7 +10625,10 @@ Preview = BaseSectionsContainerView.extend( {
 	childViewContainer: '.elementor-section-wrap',
 
 	onRender: function() {
-		var addNewSectionView = new AddSectionView();
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ) {
+            return;
+		}
+        var addNewSectionView = new AddSectionView();
 
 		addNewSectionView.render();
 

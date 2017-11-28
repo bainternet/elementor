@@ -89,6 +89,13 @@ App = Marionette.Application.extend( {
 
 	_defaultDeviceMode: 'desktop',
 
+    userCan: function( capability ) {
+        if ( ! this.config.user.capabilities.hasOwnProperty( capability ) ) {
+        	return true;
+        }
+        return this.config.user.capabilities[ capability ];
+    },
+
 	addControlView: function( controlID, ControlView ) {
 		this.modules.controls[ controlID[0].toUpperCase() + controlID.slice( 1 ) ] = ControlView;
 	},

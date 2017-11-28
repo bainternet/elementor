@@ -45,52 +45,70 @@ PanelMenuPageView = Marionette.CollectionView.extend( {
 	items: null,
 
 	initItems: function() {
-		this.items = new Backbone.Collection( [
-			{
-				name: 'global-colors',
-				icon: 'fa fa-paint-brush',
-				title: elementor.translate( 'global_colors' ),
-				type: 'page',
-				pageName: 'colorScheme'
-			},
-			{
-				name: 'global-fonts',
-				icon: 'fa fa-font',
-				title: elementor.translate( 'global_fonts' ),
-				type: 'page',
-				pageName: 'typographyScheme'
-			},
-			{
-				name: 'color-picker',
-				icon: 'fa fa-eyedropper',
-				title: elementor.translate( 'color_picker' ),
-				type: 'page',
-				pageName: 'colorPickerScheme'
-			},
-			{
-				name: 'elementor-settings',
-				icon: 'eicon-elementor',
-				title: elementor.translate( 'elementor_settings' ),
-				type: 'link',
-				link: elementor.config.settings_page_link,
-				newTab: true
-			},
-			{
-				name: 'about-elementor',
-				icon: 'fa fa-info-circle',
-				title: elementor.translate( 'about_elementor' ),
-				type: 'link',
-				link: elementor.config.elementor_site,
-				newTab: true
-			},
-			{
-				name: 'exit-to-dashboard',
-				icon: 'fa fa-times',
-				title: elementor.translate( 'exit_to_dashboard' ),
-				type: 'link',
-				link: _.unescape( elementor.config.exit_to_dashboard_url )
-			}
-		] );
+        var menuItems = [];
+        if ( elementor.userCan( 'elementor_editor_style' ) ) {
+            menuItems = menuItems.concat( [
+                {
+                    name: 'global-colors',
+                    icon: 'fa fa-paint-brush',
+                    title: elementor.translate( 'global_colors' ),
+                    type: 'page',
+                    pageName: 'colorScheme'
+                },
+                {
+                    name: 'global-fonts',
+                    icon: 'fa fa-font',
+                    title: elementor.translate( 'global_fonts' ),
+                    type: 'page',
+                    pageName: 'typographyScheme'
+                },
+                {
+                    name: 'color-picker',
+                    icon: 'fa fa-eyedropper',
+                    title: elementor.translate( 'color_picker' ),
+                    type: 'page',
+                    pageName: 'colorPickerScheme'
+                }
+            ] );
+        }
+
+
+        menuItems = menuItems.concat( [
+            {
+                name: 'about-elementor',
+                icon: 'fa fa-info-circle',
+                title: elementor.translate( 'about_elementor' ),
+                type: 'link',
+                link: elementor.config.elementor_site,
+                newTab: true
+            },
+            {
+                name: 'exit-to-dashboard',
+                icon: 'fa fa-times',
+                title: elementor.translate( 'exit_to_dashboard' ),
+                type: 'link',
+                link: _.unescape( elementor.config.exit_to_dashboard_url )
+
+            }
+        ] );
+
+        this.items = new Backbone.Collection( menuItems );
+
+        if ( elementor.userCan( 'elementor_editor_all' ) ) {
+            this.addItem(
+                {
+                    name: 'elementor-settings',
+                    icon: 'eicon-elementor',
+                    title: elementor.translate('elementor_settings'),
+                    type: 'link',
+                    link: elementor.config.settings_page_link,
+                    newTab: true
+                },
+                {
+                    after: 'about-elementor'
+                }
+            );
+        }
 	},
 
 	getItems: function() {

@@ -19,7 +19,9 @@
 				$importButton: $( '#elementor-import-template-trigger' ),
 				$importArea: $( '#elementor-import-template-area' ),
 				$settingsForm: $( '#elementor-settings-form' ),
-				$settingsTabsWrapper: $( '#elementor-settings-tabs-wrapper' )
+				$settingsTabsWrapper: $( '#elementor-settings-tabs-wrapper' ),
+                $capabilitySelect: $( 'select[name^="role_caps"]'),
+                $enableAdvancedSelect: $( 'select[name*="[elementor_editor_access]"]' )
 			};
 
 			this.cache.$settingsFormPages = this.cache.$settingsForm.find( '.elementor-settings-form-page' );
@@ -41,6 +43,18 @@
 
 		bindEvents: function() {
 			var self = this;
+
+            self.cache.$enableAdvancedSelect.on( 'change', function() {
+                var role = $( this ).data( 'role' );
+                var selector = '#' + role + '_extended_caps';
+                if ( $( selector ).length ) {
+                    if ( $( this ).val() === 'enable') {
+                       $( selector ).show();
+                    } else {
+                        $( selector ).hide();
+					}
+                }
+            } );
 
 			self.cache.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();

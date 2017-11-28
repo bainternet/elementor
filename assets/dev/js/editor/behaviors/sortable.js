@@ -52,6 +52,9 @@ SortableBehavior = Marionette.Behavior.extend( {
 		if ( this.getChildViewContainer().sortable( 'instance' ) ) {
 			return;
 		}
+        if ( ! elementor.userCan( 'elementor_editor_all' ) ) {
+			return;
+        }
 
 		var $childViewContainer = this.getChildViewContainer(),
 			defaultSortableOptions = {
