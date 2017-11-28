@@ -43,17 +43,17 @@
 		bindEvents: function() {
 			var self = this;
 
-            self.cache.$enableAdvancedSelect.on( 'change', function() {
-                var role = $( this ).data( 'role' );
-                var selector = '#' + role + '_extended_caps';
-                if ( $( selector ).length ) {
-                    if ( $( this ).val() === 'enable') {
-                       $( selector ).show();
-                    } else {
-                        $( selector ).hide();
+			self.cache.$enableAdvancedSelect.on('change', function () {
+				var role = $(this).data('role');
+				var $extendedCaps = $('#' + role + '_extended_caps');
+				if ( $extendedCaps.length ) {
+					if ( 'enable' === $(this).val() ) {
+						$extendedCaps.show();
+					} else {
+						$extendedCaps.hide();
 					}
-                }
-            } );
+				}
+			} );
 
 			self.cache.$switchModeButton.on( 'click', function( event ) {
 				event.preventDefault();
