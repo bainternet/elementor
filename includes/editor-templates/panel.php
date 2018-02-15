@@ -54,10 +54,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 </script>
 
 <script type="text/template" id="tmpl-elementor-panel-footer-content">
+	<?php if ( Plugin::$instance->role_manager->user_can( 'layout' ) ) : ?>
 	<div id="elementor-panel-footer-settings" class="elementor-panel-footer-tool elementor-leave-open tooltip-target" data-tooltip="<?php esc_html_e( 'Settings', 'elementor' ); ?>">
 		<i class="fa fa-cog" aria-hidden="true"></i>
 		<span class="elementor-screen-only"><?php esc_html_e( 'Document Settings', 'elementor' ); ?></span>
 	</div>
+	<?php endif; ?>
 	<div id="elementor-panel-footer-responsive" class="elementor-panel-footer-tool">
 		<i class="eicon-device-desktop tooltip-target" aria-hidden="true" data-tooltip="<?php esc_attr_e( 'Responsive Mode', 'elementor' ); ?>"></i>
 		<span class="elementor-screen-only">
@@ -141,7 +143,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <script type="text/template" id="tmpl-editor-content">
 	<div class="elementor-panel-navigation">
-		<# _.each( elementData.tabs_controls, function( tabTitle, tabSlug ) { #>
+		<# _.each( elementData.tabs_controls, function( tabTitle, tabSlug ) {
+			if ( 'content' !== tabSlug && ! elementor.userCan( 'style' ) ) {
+				return;
+			}
+		#>
 		<div class="elementor-panel-navigation-tab elementor-tab-control-{{ tabSlug }}" data-tab="{{ tabSlug }}">
 			<a href="#">{{{ tabTitle }}}</a>
 		</div>
