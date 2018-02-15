@@ -179,6 +179,18 @@ class Plugin {
 	public $tools;
 
 	/**
+	 * Role Manager.
+	 *
+	 * Holds the plugin Role Manager
+	 *
+	 * @since ???
+	 * @access public
+	 *
+	 * @var \Elementor\Core\RoleManager\Role_Manager
+	 */
+	public $role_manager;
+
+	/**
 	 * Preview.
 	 *
 	 * Holds the plugin preview.
@@ -436,6 +448,7 @@ class Plugin {
 		$this->templates_manager = new TemplateLibrary\Manager();
 		$this->maintenance_mode = new Maintenance_Mode();
 		$this->modules_manager = new Modules_Manager();
+		$this->role_manager = new Core\RoleManager\Role_Manager();
 
 		Api::init();
 		Tracker::init();
