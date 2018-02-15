@@ -104,6 +104,10 @@ App = Marionette.Application.extend( {
 		return this.envData.gecko || this.envData.webkit;
 	},
 
+	userCan: function( capability ) {
+		return ! ( this.config.user.restrictions.indexOf( capability ) > -1 );
+	},
+
 	getElementData: function( modelElement ) {
 		var elType = modelElement.get( 'elType' );
 

@@ -10,6 +10,10 @@ Preview = BaseSectionsContainerView.extend( {
 	childViewContainer: '.elementor-section-wrap',
 
 	onRender: function() {
+		if ( ! elementor.userCan( 'layout' ) ) {
+			return;
+		}
+
 		var addNewSectionView = new AddSectionView();
 
 		addNewSectionView.render();

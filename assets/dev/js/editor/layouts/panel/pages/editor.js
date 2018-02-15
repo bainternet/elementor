@@ -30,7 +30,16 @@ EditorView = ControlsStack.extend( {
 	},
 
 	onBeforeRender: function() {
-		var controls = elementor.getElementControls( this.model );
+		var controls = elementor.getElementControls( this.model ),
+			userCanEditStyle = elementor.userCan( 'style' );
+
+		controls = _.filter( controls, function( control ) {
+			if ( userCanEditStyle ) {
+				return true;
+			}
+
+			return 'content' === control.tab
+		} );
 
 		if ( ! controls ) {
 			throw new Error( 'Editor controls not found' );

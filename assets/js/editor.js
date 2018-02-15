@@ -362,7 +362,7 @@ module.exports = Module.extend( {
 					if ( ! self.isChangedDuringSave ) {
 						self.setFlagEditorChange( false );
 					}
-					
+
 					if ( statusChanged ) {
 						elementor.settings.page.model.set( 'post_status', options.status );
 					}
@@ -4357,6 +4357,10 @@ App = Marionette.Application.extend( {
 		return this.envData.gecko || this.envData.webkit;
 	},
 
+	userCan: function( capability ) {
+		return ! ( this.config.user.restrictions.indexOf( capability ) > -1 );
+	},
+
 	getElementData: function( modelElement ) {
 		var elType = modelElement.get( 'elType' );
 
@@ -6466,6 +6470,9 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
+		if ( ! elementor.userCan( 'layout' ) ) {
+			return;
+		}
 		this.deactivate();
 
 		var options = _.clone( this.options );
@@ -6584,6 +6591,10 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	activate: function() {
+		if ( ! elementor.userCan( 'layout' ) ) {
+			return;
+		}
+
 		if ( this.getChildViewContainer().sortable( 'instance' ) ) {
 			return;
 		}
@@ -7730,7 +7741,16 @@ EditorView = ControlsStack.extend( {
 	},
 
 	onBeforeRender: function() {
-		var controls = elementor.getElementControls( this.model );
+		var controls = elementor.getElementControls( this.model ),
+			userCanEditStyle = elementor.userCan( 'style' );
+
+		controls = _.filter( controls, function( control ) {
+			if ( userCanEditStyle ) {
+				return true;
+			}
+
+			return 'content' === control.tab
+		} );
 
 		if ( ! controls ) {
 			throw new Error( 'Editor controls not found' );
@@ -8060,6 +8080,9 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 
 	onRender: function() {
 		var self = this;
+		if ( ! elementor.userCan( 'layout' ) ) {
+			return;
+		}
 
 		this.$el.html5Draggable( {
 
@@ -11443,6 +11466,10 @@ Preview = BaseSectionsContainerView.extend( {
 	childViewContainer: '.elementor-section-wrap',
 
 	onRender: function() {
+		if ( ! elementor.userCan( 'layout' ) ) {
+			return;
+		}
+
 		var addNewSectionView = new AddSectionView();
 
 		addNewSectionView.render();
