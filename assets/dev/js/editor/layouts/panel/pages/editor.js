@@ -31,7 +31,7 @@ EditorView = ControlsStack.extend( {
 
 	onBeforeRender: function() {
 		var controls = elementor.getElementControls( this.model ),
-			userCanEditStyle = elementor.userCan( 'style' );
+			userCanEditStyle = elementor.userCan( 'design' );
 
 		controls = _.filter( controls, function( control ) {
 			if ( userCanEditStyle ) {

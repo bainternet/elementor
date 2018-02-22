@@ -311,7 +311,7 @@ abstract class Element_Base extends Controls_Stack {
 	 * @static
 	 */
 	private static function _init_edit_tools() {
-		if ( ! Plugin::instance()->role_manager->user_can( 'layout' ) ) {
+		if ( ! Plugin::instance()->role_manager->user_can( 'design' ) ) {
 			static::$_edit_tools = [];
 			return;
 		}

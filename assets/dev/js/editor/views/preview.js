@@ -10,7 +10,7 @@ Preview = BaseSectionsContainerView.extend( {
 	childViewContainer: '.elementor-section-wrap',
 
 	onRender: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 

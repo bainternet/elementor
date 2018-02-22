@@ -18,7 +18,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 		this.deactivate();

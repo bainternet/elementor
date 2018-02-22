@@ -49,7 +49,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	activate: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 

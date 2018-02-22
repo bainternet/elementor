@@ -7,7 +7,7 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 
 	onRender: function() {
 		var self = this;
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 

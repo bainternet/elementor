@@ -19,8 +19,8 @@ class Role_Manager extends Settings {
 	public function register_admin_menu() {
 		add_submenu_page(
 			Settings::PAGE_ID,
-			__( 'Role Manager', 'elementor' ),
-			__( 'Role Manager', 'elementor' ),
+			$this->get_page_title(),
+			$this->get_page_title(),
 			'manage_options',
 			self::PAGE_ID,
 			[ $this, 'display_settings_page' ]
@@ -77,13 +77,17 @@ class Role_Manager extends Settings {
 	}
 
 	public function get_user_restrictions() {
-		return apply_filters( 'elementor/editor/user/restrictions', [] );
+		static $restrictions = false;
+		if ( ! $restrictions ) {
+			$restrictions = apply_filters( 'elementor/editor/user/restrictions', [] );
+		}
+		return $restrictions;
 	}
 
-	public function user_can( $capabilities ) {
+	public function user_can( $capability ) {
 		$user  = wp_get_current_user();
 		$user_roles = $user->roles;
-		$options = $this->get_role_manager_options();
+		$options = $this->get_user_restrictions();
 
 		if ( empty( $options ) ) {
 			return true;
@@ -93,7 +97,7 @@ class Role_Manager extends Settings {
 			if ( ! isset( $options[ $role ] ) ) {
 				continue;
 			}
-			if ( in_array( $capabilities, $options[ $role ] ) ) {
+			if ( in_array( $capability, $options[ $role ] ) ) {
 				return false;
 			}
 		}
