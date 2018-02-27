@@ -76,7 +76,7 @@ class Role_Manager extends Settings {
 		return __( 'Role Manager', 'elementor' );
 	}
 
-	public function get_user_restrictions() {
+	private function get_user_restrictions() {
 		static $restrictions = false;
 		if ( ! $restrictions ) {
 			$restrictions = apply_filters( 'elementor/editor/user/restrictions', [] );
@@ -84,24 +84,31 @@ class Role_Manager extends Settings {
 		return $restrictions;
 	}
 
-	public function user_can( $capability ) {
+	public function get_user_restrictions_array() {
 		$user  = wp_get_current_user();
 		$user_roles = $user->roles;
 		$options = $this->get_user_restrictions();
+		$restrictions = [];
 
 		if ( empty( $options ) ) {
-			return true;
+			return $restrictions;
 		}
 
 		foreach ( $user_roles as $role ) {
 			if ( ! isset( $options[ $role ] ) ) {
 				continue;
 			}
-			if ( in_array( $capability, $options[ $role ] ) ) {
-				return false;
-			}
+			$restrictions = array_merge( $restrictions, $options[ $role ] );
 		}
+		return array_unique( $restrictions );
+	}
 
+	public function user_can( $capability ) {
+		$options = $this->get_user_restrictions_array();
+
+		if ( in_array( $capability, $options ) ) {
+			return false;
+		}
 		return true;
 	}
 }

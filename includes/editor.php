@@ -511,7 +511,7 @@ class Editor {
 				'enabled_schemes' => Schemes_Manager::get_enabled_schemes(),
 			],
 			'user' => [
-				'restrictions' => $plugin->role_manager->get_user_restrictions(),
+				'restrictions' => $plugin->role_manager->get_user_restrictions_array(),
 			],
 			'default_schemes' => $plugin->schemes_manager->get_schemes_defaults(),
 			'settings' => SettingsManager::get_settings_managers_config(),
