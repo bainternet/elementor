@@ -278,4 +278,14 @@ abstract class Settings_Page {
 			do_action( "elementor/admin/after_create_settings/{$page_id}", $this );
 		}
 	}
+
+	/**
+	 * @since 2.0.0
+	 * @access public
+	 * @param string $tab_id
+	 * @param array $tab_args
+	 */
+	public function update_tab( $tab_id, $tab_args ) {
+		$this->tabs[ $tab_id ] = $tab_args;
+	}
 }

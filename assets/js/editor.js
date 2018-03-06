@@ -6470,7 +6470,7 @@ ResizableBehavior = Marionette.Behavior.extend( {
 	},
 
 	active: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 		this.deactivate();
@@ -6591,7 +6591,7 @@ SortableBehavior = Marionette.Behavior.extend( {
 	},
 
 	activate: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 
@@ -7742,7 +7742,7 @@ EditorView = ControlsStack.extend( {
 
 	onBeforeRender: function() {
 		var controls = elementor.getElementControls( this.model ),
-			userCanEditStyle = elementor.userCan( 'style' );
+			userCanEditStyle = elementor.userCan( 'design' );
 
 		controls = _.filter( controls, function( control ) {
 			if ( userCanEditStyle ) {
@@ -8080,7 +8080,7 @@ PanelElementsElementView = Marionette.ItemView.extend( {
 
 	onRender: function() {
 		var self = this;
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 
@@ -11466,7 +11466,7 @@ Preview = BaseSectionsContainerView.extend( {
 	childViewContainer: '.elementor-section-wrap',
 
 	onRender: function() {
-		if ( ! elementor.userCan( 'layout' ) ) {
+		if ( ! elementor.userCan( 'design' ) ) {
 			return;
 		}
 
