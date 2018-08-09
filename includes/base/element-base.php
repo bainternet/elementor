@@ -590,6 +590,25 @@ abstract class Element_Base extends Controls_Stack {
 		$element_type = $this->get_type();
 
 		/**
+		 * Frontend skip element render.
+		 *
+		 * Fires before Elementor element is rendered in the frontend,
+		 * return true to short-curcit the rendering and avoid it
+		 *
+		 * The dynamic portion of the hook name, `$element_type`, refers to the element type.
+		 *
+		 * @since 2.2.0 ???
+		 *
+		 * @param boolean false
+		 * @param Element_Base $this The element.
+		 */
+		$skip_render = apply_filters( "elementor/frontend/skip_render/{$element_type}", false, $this );
+
+		if ( $skip_render ) {
+			return;
+		}
+
+		/**
 		 * Before frontend element render.
 		 *
 		 * Fires before Elementor element is rendered in the frontend.
