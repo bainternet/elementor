@@ -84,6 +84,7 @@ const App = Marionette.Application.extend( {
 			Number: require( 'elementor-controls/number' ),
 			Order: require( 'elementor-controls/order' ),
 			Popover_toggle: require( 'elementor-controls/popover-toggle' ),
+			React_component: require( 'elementor-controls/react-component' ),
 			Repeater: require( 'elementor-controls/repeater' ),
 			RepeaterRow: require( 'elementor-controls/repeater-row' ),
 			Section: require( 'elementor-controls/section' ),

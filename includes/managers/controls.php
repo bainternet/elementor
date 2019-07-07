@@ -237,6 +237,11 @@ class Controls_Manager {
 	const EXIT_ANIMATION = 'exit_animation';
 
 	/**
+	 * React Component control.
+	 */
+	const REACT_COMPONENT = 'react_component';
+
+	/**
 	 * Controls.
 	 *
 	 * Holds the list of all the controls. Default is `null`.
@@ -405,6 +410,7 @@ class Controls_Manager {
 			self::ANIMATION,
 			self::HOVER_ANIMATION,
 			self::EXIT_ANIMATION,
+			self::REACT_COMPONENT,
 		];
 	}
 
