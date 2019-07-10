@@ -14,8 +14,14 @@ Conditions = function() {
 			case '!==':
 				return leftValue !== rightValue;
 			case 'in':
+				if ( Array.isArray( leftValue ) ) {
+					return leftValue.some( ( value ) => rightValue.includes( value ) );
+				}
 				return -1 !== rightValue.indexOf( leftValue );
 			case '!in':
+				if ( Array.isArray( leftValue ) ) {
+					return ! leftValue.some( ( value ) => rightValue.includes( value ) );
+				}
 				return -1 === rightValue.indexOf( leftValue );
 			case 'contains':
 				return -1 !== leftValue.indexOf( rightValue );
